@@ -1,5 +1,5 @@
 
-const config = {
+const firebaseConfig = {
       apiKey: "AIzaSyA4t6xgTgopidz5XxoEK64SLtpvAHueztk",
       authDomain: "kwitter-database-d0473.firebaseapp.com",
       databaseURL: "https://kwitter-database-d0473-default-rtdb.firebaseio.com",
@@ -10,8 +10,9 @@ const config = {
       measurementId: "G-1Y3BGZY27Z"
     };
     // Initialize Firebase
-    firebase.initializeApp(config);
-    user_name=localstorage.getItem("user_name");
+    firebase.initializeApp(firebaseConfig);
+    user_name=localStorage.getItem("user_name");
+    room_name=localStorage.getItem("user_name");
     document.getElementById("user_name").innerHTML="welcome"+user_name;
     firebase.analytics();
     function addRoom() {
@@ -37,4 +38,19 @@ function redirectToRoomName(name){
       console.log(name);
       localstorage.setItem("room_name",name);
       window.location="kwitter_page.html";
+}
+function logout(){
+      localStorage.removeItem("user_name");
+      localStorage.removeItem("room_name");
+      window.location="kwitter.html";
+}
+
+function send(){
+      msg=document.getElementById("msg").value;
+      firebase.database().ref(room_name).push({
+            name: user_name,
+            message: msg,
+            like: 0 
+      });
+      document.getElementById("msg").value="";
 }
